@@ -1,0 +1,31 @@
+<aside class="admin-sidebar">
+  <p class="admin-sidebar__title">Admin</p>
+
+  <nav class="admin-sidebar__nav">
+    <a
+      routerLink="/admin/dashboard"
+      routerLinkActive="admin-sidebar__link--active"
+      class="admin-sidebar__link"
+    >
+      Dashboard
+    </a>
+    <a
+      routerLink="/admin/products"
+      routerLinkActive="admin-sidebar__link--active"
+      class="admin-sidebar__link"
+    >
+      Products
+    </a>
+    <a
+      routerLink="/admin/categories"
+      routerLinkActive="admin-sidebar__link--active"
+      class="admin-sidebar__link"
+    >
+      Categories
+    </a>
+  </nav>
+
+  <div class="admin-sidebar__logout">
+    <app-button variant="ghost" label="Logout" (clicked)="logout()" />
+  </div>
+</aside>

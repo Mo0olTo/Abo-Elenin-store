@@ -1,0 +1,8 @@
+<button
+  [class]="buttonClass()"
+  [attr.type]="type()"
+  [disabled]="disabled() || loading()"
+  (click)="onClick()"
+>
+  {{ loading() ? loadingLabel() : label() }}
+</button>

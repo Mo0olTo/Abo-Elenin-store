@@ -1,0 +1,67 @@
+<header class="navbar">
+  <nav class="navbar__bar">
+    <a routerLink="/store/home" class="navbar__brand" (click)="closeMenu()">Abo Elenin Glasses</a>
+
+    <button
+      class="navbar__toggle"
+      type="button"
+      [class.navbar__toggle--open]="menuOpen()"
+      [attr.aria-expanded]="menuOpen()"
+      aria-controls="store-nav-menu"
+      aria-label="Toggle navigation menu"
+      (click)="toggleMenu()"
+    >
+      <span class="navbar__toggle-line"></span>
+      <span class="navbar__toggle-line"></span>
+      <span class="navbar__toggle-line"></span>
+    </button>
+
+    <div class="navbar__dropdown" [class.navbar__dropdown--open]="menuOpen()" id="store-nav-menu">
+      <div class="navbar__dropdown-inner">
+        <div class="navbar__links">
+          <a
+            routerLink="/store/home"
+            routerLinkActive="navbar__link--active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="navbar__link"
+            (click)="closeMenu()"
+          >
+            Home
+          </a>
+          <a
+            routerLink="/store/categories"
+            routerLinkActive="navbar__link--active"
+            class="navbar__link"
+            (click)="closeMenu()"
+          >
+            Categories
+          </a>
+          <a
+            routerLink="/store/new-arrivals"
+            routerLinkActive="navbar__link--active"
+            class="navbar__link"
+            (click)="closeMenu()"
+          >
+            New arrivals
+          </a>
+          <a
+            routerLink="/store/products"
+            routerLinkActive="navbar__link--active"
+            class="navbar__link"
+            (click)="closeMenu()"
+          >
+            Products
+          </a>
+          <a
+            routerLink="/store/cart"
+            routerLinkActive="navbar__link--active"
+            class="navbar__link"
+            (click)="closeMenu()"
+          >
+            Cart
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

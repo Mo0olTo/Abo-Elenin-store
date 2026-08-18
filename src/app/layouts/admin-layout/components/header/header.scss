@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+.admin-header {
+  border-bottom: 1px solid #e2e8f0;
+  background: #fff;
+  padding: 1rem 1rem;
+}
+
+.admin-header__email {
+  margin: 0;
+  color: #64748b;
+  font-size: 0.875rem;
+}
+
+@media (min-width: 1024px) {
+  .admin-header {
+    padding-inline: 1.5rem;
+  }
+}

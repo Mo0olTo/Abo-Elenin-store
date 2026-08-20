@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@theme {
+  --color-brand-white: #ffffff;
+  --color-brand-black: #000000;
+  --color-brand-charcoal: #0a0a0a;
+  --color-brand-shadow: #121212;
+  --color-brand-gray: #2e2e2e;
+}
+
 html,
 body {
   margin: 0;

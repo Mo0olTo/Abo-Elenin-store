@@ -1,6 +1,15 @@
 <section class="mx-auto max-w-6xl px-4 py-16">
   <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Products</h1>
-  <p class="mt-3 max-w-xl text-slate-600">
-    The full glasses catalog will be listed here after products are loaded from Firestore.
-  </p>
+
+  @if (loading()) {
+    <p class="mt-3 max-w-xl text-slate-600">Loading the catalog…</p>
+  } @else if (products().length === 0) {
+    <p class="mt-3 max-w-xl text-slate-600">No products yet.</p>
+  } @else {
+    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
+      @for (product of products(); track product.id) {
+        <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
+      }
+    </div>
+  }
 </section>

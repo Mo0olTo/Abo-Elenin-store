@@ -1,0 +1,62 @@
+<div class="grid gap-3">
+  <div class="flex flex-wrap gap-2">
+    @for (color of palette; track color.hex) {
+      <button
+        class="size-9 rounded-full border-2 transition"
+        type="button"
+        [class.border-slate-900]="isSelected(color)"
+        [class.border-slate-200]="!isSelected(color)"
+        [class.scale-110]="isSelected(color)"
+        [style.background-color]="color.hex"
+        [disabled]="disabled()"
+        [attr.title]="color.name"
+        [attr.aria-pressed]="isSelected(color)"
+        [attr.aria-label]="color.name"
+        (click)="toggle(color)"
+      ></button>
+    }
+  </div>
+
+  <div class="flex flex-wrap items-center gap-3">
+    <label class="flex items-center gap-2 text-sm text-slate-700">
+      <span>Custom</span>
+      <input
+        class="size-9 cursor-pointer rounded border border-slate-300 bg-white p-0.5"
+        type="color"
+        [value]="customHex"
+        [disabled]="disabled()"
+        (input)="onCustomHexChange($event)"
+      />
+    </label>
+    <button
+      class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+      type="button"
+      [disabled]="disabled()"
+      (click)="addCustomColor()"
+    >
+      Add color
+    </button>
+  </div>
+
+  @if (selected().length > 0) {
+    <ul class="m-0 flex list-none flex-wrap gap-2 p-0">
+      @for (color of selected(); track color.hex) {
+        <li
+          class="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs text-slate-700"
+        >
+          <span class="size-3 rounded-full border border-black/10" [style.background-color]="color.hex"></span>
+          {{ color.name }}
+          <button
+            class="text-slate-500 hover:text-slate-900"
+            type="button"
+            [disabled]="disabled()"
+            [attr.aria-label]="'Remove ' + color.name"
+            (click)="remove(color)"
+          >
+            ×
+          </button>
+        </li>
+      }
+    </ul>
+  }
+</div>

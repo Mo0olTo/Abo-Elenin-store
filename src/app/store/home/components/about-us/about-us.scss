@@ -1,0 +1,18 @@
+.about-story {
+  perspective: 1200px;
+}
+
+.about-story__frame {
+  transform: rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg));
+  transition: transform 0.35s ease;
+}
+
+.about-story__image {
+  object-fit: cover;
+  transform: scale(1.08) translate(var(--pan-x, 0), var(--pan-y, 0));
+  transition: transform 0.45s ease;
+}
+
+.about-story:hover .about-story__image {
+  transform: scale(1.14) translate(var(--pan-x, 0), var(--pan-y, 0));
+}

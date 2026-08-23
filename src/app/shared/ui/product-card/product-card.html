@@ -1,0 +1,76 @@
+<article
+  class="group flex h-full w-full flex-col overflow-hidden rounded-2xl bg-brand-white shadow-md transition duration-300 hover:-translate-y-2 hover:shadow-xl"
+  (mouseenter)="hovered.set(true)"
+  (mouseleave)="hovered.set(false)"
+>
+  <div class="product-card__media relative h-40 w-full overflow-hidden bg-brand-shadow sm:h-48">
+    @for (image of images(); track image; let i = $index) {
+      <img
+        class="product-card__photo absolute inset-0 h-full w-full object-cover"
+        [class.product-card__photo--active]="activeIndex() === i"
+        [src]="image"
+        [alt]="product().name"
+      />
+    }
+
+    <a
+      class="absolute top-3 inset-e-3 z-10 grid size-10 place-items-center rounded-full bg-black/55 text-brand-white opacity-0 -translate-y-1.5 transition duration-300 hover:bg-brand-black group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100"
+      [routerLink]="['/store/products', product().id]"
+      [attr.aria-label]="'View details for ' + product().name"
+    >
+      <svg class="size-[1.15rem]" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <path
+          d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"
+          stroke="currentColor"
+          stroke-width="1.8"
+        />
+        <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.8" />
+      </svg>
+    </a>
+  </div>
+
+  <div class="grid flex-1 grid-rows-[1rem_1.5rem_1.25rem_0.875rem_auto] gap-2 px-4 pt-4 pb-4">
+    <p class="m-0 truncate text-xs tracking-wide text-brand-gray uppercase">
+      {{ product().brand || '\u00a0' }}
+    </p>
+    <h3 class="m-0 truncate text-base font-semibold text-brand-charcoal">{{ product().name }}</h3>
+    <p class="m-0 flex items-baseline gap-x-2 overflow-hidden text-sm whitespace-nowrap">
+      @if (hasDiscount()) {
+        <span class="font-semibold text-brand-charcoal">{{ salePrice() | currency: 'EGP' }}</span>
+        <span class="text-brand-gray line-through">{{ product().price | currency: 'EGP' }}</span>
+      } @else {
+        <span class="text-brand-gray">{{ product().price | currency: 'EGP' }}</span>
+      }
+    </p>
+
+    <ul class="m-0 flex h-3.5 list-none items-center gap-1.5 overflow-hidden p-0" aria-label="Available colors">
+      @if (hasColors()) {
+        @for (color of colors(); track color.name + color.hex) {
+          <li>
+            <span
+              class="block size-3.5 rounded-full border border-black/15"
+              [style.background-color]="color.hex"
+              [attr.title]="color.name"
+              [attr.aria-label]="color.name"
+            ></span>
+          </li>
+        }
+      } @else {
+        <li>
+          <svg
+            class="size-3.5 text-black/40"
+            viewBox="0 0 16 16"
+            fill="none"
+            title="No colors available"
+            aria-label="No colors available"
+          >
+            <circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.2" />
+            <path d="M4 12 12 4" stroke="currentColor" stroke-width="1.2" />
+          </svg>
+        </li>
+      }
+    </ul>
+
+    <app-button label="Add to cart" (clicked)="onAddToCart()" />
+  </div>
+</article>

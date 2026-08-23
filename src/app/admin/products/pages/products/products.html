@@ -1,4 +1,286 @@
-<section class="rounded-2xl bg-white p-6 shadow-sm">
-  <h1 class="text-xl font-semibold text-slate-900">Products</h1>
-  <p class="mt-2 text-sm text-slate-500">Product management will be added in the next catalog step.</p>
+<section class="grid gap-6">
+  <div class="flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">Products</h1>
+      <p class="mt-1 text-sm text-slate-500">Add, edit, and manage the store catalog.</p>
+    </div>
+
+    <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:items-center">
+      <label class="block sm:w-64">
+        <span class="sr-only">Search products</span>
+        <input
+          class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+          type="search"
+          placeholder="Search by name, brand, or category"
+          [value]="facade.search()"
+          (input)="onSearchChange($event)"
+        />
+      </label>
+
+      <app-button label="Add product" (clicked)="facade.startCreate()" />
+    </div>
+  </div>
+
+  @if (facade.hasError()) {
+    <p class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{{ facade.error() }}</p>
+  }
+
+  @if (facade.formOpen()) {
+    <form class="grid gap-4 rounded-2xl bg-white p-6 shadow-sm" [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h2 class="text-lg font-semibold text-slate-900">
+        {{ facade.isEditing() ? 'Edit product' : 'Add product' }}
+      </h2>
+
+      <div class="grid gap-4 md:grid-cols-2">
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Name</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="text"
+            formControlName="name"
+          />
+          @if (form.controls.name.touched && form.controls.name.invalid) {
+            <p class="mt-1 text-xs text-red-600">Name is required.</p>
+          }
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Brand</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="text"
+            formControlName="brand"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Category ID</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="text"
+            formControlName="categoryId"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Gender</span>
+          <select
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+            formControlName="gender"
+          >
+            @for (option of genders; track option) {
+              <option [value]="option">{{ option }}</option>
+            }
+          </select>
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Price</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="number"
+            min="0"
+            step="0.01"
+            formControlName="price"
+          />
+          @if (form.controls.price.touched && form.controls.price.invalid) {
+            <p class="mt-1 text-xs text-red-600">Enter a price greater than 0.</p>
+          }
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Discount</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="number"
+            min="0"
+            step="0.01"
+            formControlName="discount"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Stock</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="number"
+            min="0"
+            step="1"
+            formControlName="stock"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Frame material</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="text"
+            formControlName="frameMaterial"
+          />
+        </label>
+
+        <label class="block">
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Lens type</span>
+          <input
+            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+            type="text"
+            formControlName="lensType"
+          />
+        </label>
+
+        <label class="flex items-center gap-2 self-end pb-2 text-sm font-medium text-slate-700">
+          <input type="checkbox" formControlName="isActive" />
+          Active
+        </label>
+      </div>
+
+      <div class="grid gap-2">
+        <span class="text-sm font-medium text-slate-700">Frame colors</span>
+        <p class="text-xs text-slate-500">Select one or more colors from the palette.</p>
+        <app-color-palette
+          [selected]="form.controls.colors.value"
+          [disabled]="facade.saving()"
+          (selectedChange)="onColorsChange($event)"
+        />
+      </div>
+
+      <div class="grid gap-2">
+        <span class="text-sm font-medium text-slate-700">Product images</span>
+        <app-image-uploader
+          [images]="form.controls.images.value"
+          [disabled]="facade.saving()"
+          (imagesChange)="onImagesChange($event)"
+        />
+        @if (form.controls.images.touched && form.controls.images.invalid) {
+          <p class="text-xs text-red-600">Select at least one product image.</p>
+        }
+      </div>
+
+      <label class="block">
+        <span class="mb-1.5 block text-sm font-medium text-slate-700">Description</span>
+        <textarea
+          class="min-h-28 w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+          formControlName="description"
+        ></textarea>
+      </label>
+
+      <div class="flex flex-col gap-3 sm:flex-row sm:justify-end">
+        <button
+          class="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-60"
+          type="button"
+          [disabled]="facade.saving()"
+          (click)="facade.cancelForm()"
+        >
+          Cancel
+        </button>
+        <app-button
+          type="submit"
+          [label]="facade.isEditing() ? 'Save changes' : 'Create product'"
+          loadingLabel="Saving..."
+          [loading]="facade.saving()"
+          [disabled]="form.invalid || facade.saving()"
+        />
+      </div>
+    </form>
+  }
+
+  <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
+    @if (facade.loading()) {
+      <p class="p-6 text-sm text-slate-500">Loading products…</p>
+    } @else if (facade.isEmpty()) {
+      <p class="p-6 text-sm text-slate-500">No products yet. Add the first product to the catalog.</p>
+    } @else if (facade.products().length === 0) {
+      <p class="p-6 text-sm text-slate-500">No products match this search.</p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-slate-50 text-slate-500">
+            <tr>
+              <th class="px-4 py-3 font-medium">Product</th>
+              <th class="px-4 py-3 font-medium">Price</th>
+              <th class="px-4 py-3 font-medium">Stock</th>
+              <th class="px-4 py-3 font-medium">Status</th>
+              <th class="px-4 py-3 font-medium">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (product of facade.products(); track product.id) {
+              <tr class="border-t border-slate-100">
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-900">{{ product.name }}</p>
+                  <p class="text-slate-500">{{ product.brand || 'No brand' }}</p>
+                </td>
+                <td class="px-4 py-3 text-slate-700">{{ product.price | currency: 'EGP' }}</td>
+                <td class="px-4 py-3 text-slate-700">{{ product.stock }}</td>
+                <td class="px-4 py-3">
+                  <span
+                    class="inline-flex rounded-full px-2 py-1 text-xs font-medium"
+                    [class.bg-emerald-50]="product.isActive"
+                    [class.text-emerald-700]="product.isActive"
+                    [class.bg-slate-100]="!product.isActive"
+                    [class.text-slate-600]="!product.isActive"
+                  >
+                    {{ product.isActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex flex-wrap gap-2">
+                    <button
+                      class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      type="button"
+                      (click)="onEdit(product)"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                      type="button"
+                      (click)="onToggleActive(product)"
+                    >
+                      {{ product.isActive ? 'Deactivate' : 'Activate' }}
+                    </button>
+                    <button
+                      class="rounded-lg bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-500"
+                      type="button"
+                      (click)="onDelete(product)"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
 </section>
+
+@if (facade.pendingDelete(); as product) {
+  <div class="fixed inset-0 z-50 grid place-items-center bg-slate-900/40 p-4">
+    <div class="w-full max-w-md rounded-2xl bg-white p-6 shadow-lg">
+      <h2 class="text-lg font-semibold text-slate-900">Delete product</h2>
+      <p class="mt-2 text-sm text-slate-600">
+        Delete <span class="font-medium text-slate-900">{{ product.name }}</span>? This cannot be undone.
+      </p>
+      <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-end">
+        <button
+          class="rounded-lg border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+          type="button"
+          [disabled]="facade.saving()"
+          (click)="facade.cancelDelete()"
+        >
+          Cancel
+        </button>
+        <app-button
+          variant="danger"
+          label="Delete product"
+          loadingLabel="Deleting..."
+          [loading]="facade.saving()"
+          (clicked)="facade.confirmDelete()"
+        />
+      </div>
+    </div>
+  </div>
+}

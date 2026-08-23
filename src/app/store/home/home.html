@@ -1,8 +1,14 @@
 <app-hero-section />
 
 <section class="mx-auto max-w-6xl px-4 py-16">
-  <h2 class="text-3xl font-semibold tracking-tight text-slate-900">Abo Elenin Glasses</h2>
-  <p class="mt-4 max-w-xl text-lg text-slate-600">
-    Browse the collection soon. The public catalog, cart, and WhatsApp checkout will be connected next.
-  </p>
+  <app-home-section-title
+    title="New arrivals"
+    subtitle="Recently added frames from the catalog."
+  />
+
+  <app-products-carousel [products]="latestProducts()" (addToCart)="onAddToCart($event)" />
 </section>
+
+<app-about-us />
+
+<app-why-us />

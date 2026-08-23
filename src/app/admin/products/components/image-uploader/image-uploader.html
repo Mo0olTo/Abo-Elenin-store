@@ -1,0 +1,34 @@
+<div class="grid gap-3">
+  <p class="text-xs text-slate-500">
+    Choose from the public product photos. File upload will be available after Firebase Storage is enabled.
+  </p>
+
+  <ul class="m-0 grid list-none grid-cols-2 gap-3 p-0 sm:grid-cols-3">
+    @for (image of catalog(); track image) {
+      <li>
+        <button
+          class="relative block h-28 w-full overflow-hidden rounded-xl border-2 bg-slate-100 text-start transition"
+          type="button"
+          [class.border-slate-900]="isSelected(image)"
+          [class.border-transparent]="!isSelected(image)"
+          [disabled]="disabled()"
+          [attr.aria-pressed]="isSelected(image)"
+          [attr.aria-label]="'Select ' + image"
+          (click)="toggle(image)"
+        >
+          <img
+            class="object-cover"
+            [ngSrc]="image"
+            [alt]="'Product photo ' + image"
+            fill
+          />
+          @if (isSelected(image)) {
+            <span class="absolute top-2 inset-e-2 rounded-full bg-slate-900 px-2 py-1 text-xs text-white">
+              Selected
+            </span>
+          }
+        </button>
+      </li>
+    }
+  </ul>
+</div>

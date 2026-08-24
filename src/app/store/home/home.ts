@@ -6,11 +6,12 @@ import { HeroSection } from '../../shared/ui/hero-section/hero-section';
 import { HomeSectionTitle } from '../../shared/ui/home-section-title/home-section-title';
 import { ProductsCarousel } from '../../shared/ui/products-carousel/products-carousel';
 import { AboutUs } from './components/about-us/about-us';
+import { TrendingStyles } from './components/trending-styles/trending-styles';
 import { WhyUs } from './components/why-us/why-us';
 
 @Component({
   selector: 'app-home',
-  imports: [AboutUs, HeroSection, HomeSectionTitle, ProductsCarousel, WhyUs],
+  imports: [AboutUs, HeroSection, HomeSectionTitle, ProductsCarousel, TrendingStyles, WhyUs],
   templateUrl: './home.html',
   styleUrl: './home.scss',
 })

@@ -15,9 +15,13 @@
   <div
     class="hero__logo relative z-10 flex flex-col items-center justify-center px-6 text-center text-brand-white"
   >
-    <p class="hero__arabic text-2xl md:text-3xl" dir="rtl" lang="ar">{{ arabicName() }}</p>
+    <img
+      src="/images/logo.png"
+      alt="أبو العينين"
+      class="hero__arabic mx-auto block h-auto w-[88%] max-w-72 object-contain sm:max-w-md md:max-w-xl lg:max-w-3xl"
+    />
     <h1 class="mt-2 text-4xl font-bold tracking-[0.2em] md:text-6xl">{{ englishName() }}</h1>
     <p class="hero__category mt-2 text-sm tracking-[0.45em] text-brand-white/80">{{ category() }}</p>
-    <p class="hero__since mt-10 text-sm italic text-brand-white/70">{{ since() }}</p>
+    <p class="hero__since mt-10 text-xl italic text-brand-white/70">{{ since() }}</p>
   </div>
 </section>

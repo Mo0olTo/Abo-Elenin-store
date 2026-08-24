@@ -48,7 +48,7 @@ export const frameColorPalette: readonly ProductColor[] = [
   { name: 'White', hex: '#F5F5F5' },
 ];
 
-export const productGenders: readonly ProductGender[] = ['men', 'women', 'unisex'];
+export const productGenders: readonly ProductGender[] = ['men', 'women', 'kids', 'unisex'];
 
 export const publicProductImages: readonly string[] = [
   '/images/products/1.jpg',

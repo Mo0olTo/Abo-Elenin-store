@@ -190,7 +190,7 @@ export class ProductService {
   }
 
   private readGender(value: unknown): ProductGender {
-    if (value === 'men' || value === 'women' || value === 'unisex') {
+    if (value === 'men' || value === 'women' || value === 'kids' || value === 'unisex') {
       return value;
     }
 

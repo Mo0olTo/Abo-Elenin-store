@@ -1,0 +1,26 @@
+<section>
+  <h2 class="m-0 text-sm font-semibold tracking-wide text-brand-gray uppercase">{{ title() }}</h2>
+
+  @if (options().length === 0) {
+    <p class="mt-3 m-0 text-sm text-slate-500">No colors yet.</p>
+  } @else {
+    <ul class="mt-3 m-0 flex list-none flex-wrap gap-2 p-0">
+      @for (color of options(); track color.hex) {
+        <li>
+          <button
+            class="size-7 rounded-full border border-black/20 transition cursor-pointer"
+            [class.ring-2]="isSelected(color.hex)"
+            [class.ring-brand-charcoal]="isSelected(color.hex)"
+            [class.ring-offset-2]="isSelected(color.hex)"
+            [style.background-color]="color.hex"
+            type="button"
+            [attr.aria-pressed]="isSelected(color.hex)"
+            [attr.aria-label]="color.name"
+            [attr.title]="color.name"
+            (click)="toggle(color.hex)"
+          ></button>
+        </li>
+      }
+    </ul>
+  }
+</section>

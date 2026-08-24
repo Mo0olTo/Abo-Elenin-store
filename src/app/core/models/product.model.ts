@@ -1,4 +1,4 @@
-export type ProductGender = 'men' | 'women' | 'unisex';
+export type ProductGender = 'men' | 'women' | 'kids' | 'unisex';
 
 export interface ProductColor {
   readonly name: string;

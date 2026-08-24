@@ -18,10 +18,22 @@
 }
 
 .navbar__brand {
-  color: #0f172a;
-  font-size: 1.125rem;
-  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   text-decoration: none;
+}
+
+.navbar__logo {
+  display: block;
+  height: 2.75rem;
+  width: auto;
+}
+
+.navbar__wordmark {
+  display: block;
+  height: 2.25rem;
+  width: auto;
 }
 
 .navbar__toggle {
@@ -165,9 +177,22 @@
   }
 
   .navbar__link {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
     padding: 0;
     transform: none;
     opacity: 1;
     transition: color 0.2s ease;
+  }
+
+  .navbar__link::after {
+    content: attr(data-label);
+    height: 0;
+    overflow: hidden;
+    font-weight: 500;
+    visibility: hidden;
+    pointer-events: none;
+    user-select: none;
   }
 }

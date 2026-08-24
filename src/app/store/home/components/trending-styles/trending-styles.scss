@@ -1,0 +1,87 @@
+.trending-styles__panels {
+  height: 28rem;
+  gap: 0.75rem;
+}
+
+.trending-styles__card {
+  position: relative;
+  flex: 0.7 1 0;
+  min-width: 4.5rem;
+  overflow: hidden;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  transition: flex 0.5s ease;
+}
+
+.trending-styles__card:first-child,
+.trending-styles__panels:hover .trending-styles__card:hover {
+  flex: 4.5 1 0;
+}
+
+.trending-styles__panels:hover .trending-styles__card:not(:hover) {
+  flex: 0.7 1 0;
+}
+
+.trending-styles__card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.trending-styles__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 60%), rgb(0 0 0 / 10%), transparent);
+}
+
+.trending-styles__title {
+  position: absolute;
+  top: 1.5rem;
+  left: 1rem;
+  margin: 0;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  transition:
+    transform 0.4s ease,
+    top 0.4s ease,
+    bottom 0.4s ease,
+    left 0.4s ease,
+    font-size 0.4s ease;
+}
+
+.trending-styles__card:first-child .trending-styles__title,
+.trending-styles__card:hover .trending-styles__title {
+  top: auto;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  font-size: 1.25rem;
+  writing-mode: horizontal-tb;
+  transform: none;
+}
+
+.trending-styles__panels:hover .trending-styles__card:not(:hover) .trending-styles__title {
+  top: 1.5rem;
+  bottom: auto;
+  left: 1rem;
+  font-size: 0.875rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+@media (min-width: 1024px) {
+  .trending-styles__panels {
+    height: 32rem;
+  }
+
+  .trending-styles__card:first-child .trending-styles__title,
+  .trending-styles__card:hover .trending-styles__title {
+    font-size: 1.5rem;
+  }
+}

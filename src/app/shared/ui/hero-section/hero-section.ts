@@ -9,7 +9,6 @@ import { interval } from 'rxjs';
   styleUrl: './hero-section.scss',
 })
 export class HeroSection {
-  readonly arabicName = input('ابو العينين');
   readonly englishName = input('ABO EL ENIN');
   readonly category = input('OPTICS');
   readonly since = input('Since 1990');

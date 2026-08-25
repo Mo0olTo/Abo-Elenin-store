@@ -1,19 +1,24 @@
 import { CurrencyPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { Button } from '../../shared/ui/button/button';
+import { ConfirmDialog } from '../../shared/ui/confirm-dialog/confirm-dialog';
 import { CartFacade } from './facade/cart.facade';
 import { CartItem, cartItemImage, cartSalePrice } from './models/cart-item.model';
 
 @Component({
   selector: 'app-cart',
-  imports: [Button, CurrencyPipe, RouterLink],
+  imports: [Button, ConfirmDialog, CurrencyPipe, RouterLink],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
 export class Cart {
   private readonly router = inject(Router);
   protected readonly facade = inject(CartFacade);
+
+  constructor() {
+    inject(DestroyRef).onDestroy(() => this.facade.cancelRemove());
+  }
 
   protected imageFor(item: CartItem): string {
     return cartItemImage(item);

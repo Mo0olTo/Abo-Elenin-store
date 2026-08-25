@@ -50,6 +50,37 @@
             }
           </label>
 
+          <div class="grid gap-4 sm:grid-cols-2">
+            <label class="block">
+              <span class="mb-1.5 block text-sm font-medium text-brand-charcoal">Governorate</span>
+              <select
+                class="w-full rounded-lg border border-black/15 bg-brand-white px-3 py-2.5 text-sm text-brand-charcoal outline-none transition focus:border-brand-charcoal focus:ring-2 focus:ring-black/10 disabled:bg-slate-100"
+                formControlName="governorate"
+              >
+                <option value="" disabled>Select governorate</option>
+                @for (governorate of governorates; track governorate) {
+                  <option [value]="governorate">{{ governorate }}</option>
+                }
+              </select>
+              @if (form.controls.governorate.touched && form.controls.governorate.invalid) {
+                <p class="mt-1 text-xs text-red-600">Select a governorate.</p>
+              }
+            </label>
+
+            <label class="block">
+              <span class="mb-1.5 block text-sm font-medium text-brand-charcoal">City</span>
+              <input
+                class="w-full rounded-lg border border-black/15 bg-brand-white px-3 py-2.5 text-sm text-brand-charcoal outline-none transition focus:border-brand-charcoal focus:ring-2 focus:ring-black/10 disabled:bg-slate-100"
+                type="text"
+                autocomplete="address-level2"
+                formControlName="city"
+              />
+              @if (form.controls.city.touched && form.controls.city.invalid) {
+                <p class="mt-1 text-xs text-red-600">Enter your city.</p>
+              }
+            </label>
+          </div>
+
           <label class="block">
             <span class="mb-1.5 block text-sm font-medium text-brand-charcoal">Address</span>
             <textarea
@@ -121,4 +152,15 @@
       </aside>
     </form>
   }
+
+  <app-confirm-dialog
+    [open]="discardOpen()"
+    title="Order not completed"
+    message="Your order is not completed. Are you sure that you want to discard it?"
+    cancelLabel="Stay"
+    confirmLabel="Leave"
+    confirmVariant="primary"
+    (confirmed)="discardCheckout()"
+    (cancelled)="stayOnCheckout()"
+  />
 </section>

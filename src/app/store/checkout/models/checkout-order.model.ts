@@ -31,6 +31,8 @@ export function buildWhatsAppMessage(
     '',
     `Name: ${customer.fullName}`,
     `Phone: ${customer.phone}`,
+    `Governorate: ${customer.governorate}`,
+    `City: ${customer.city}`,
     `Address: ${customer.address}`,
     ...noteLine,
     '',

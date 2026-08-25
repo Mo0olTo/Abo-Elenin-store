@@ -1,0 +1,177 @@
+<section class="grid gap-6">
+  <div class="flex flex-col gap-4 rounded-2xl bg-white p-6 shadow-sm sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-slate-900">Orders</h1>
+      <p class="mt-1 text-sm text-slate-500">Customer orders saved from checkout.</p>
+    </div>
+
+    <label class="block sm:w-72">
+      <span class="sr-only">Search orders</span>
+      <input
+        class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10"
+        type="search"
+        placeholder="Search by name, phone, or product"
+        [value]="facade.search()"
+        (input)="onSearchChange($event)"
+      />
+    </label>
+  </div>
+
+  @if (facade.hasError()) {
+    <p class="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">{{ facade.error() }}</p>
+  }
+
+  <div class="overflow-hidden rounded-2xl bg-white shadow-sm">
+    @if (facade.loading()) {
+      <p class="p-6 text-sm text-slate-500">Loading orders…</p>
+    } @else if (facade.isEmpty()) {
+      <p class="p-6 text-sm text-slate-500">No orders yet. Confirmed checkout orders will appear here.</p>
+    } @else if (facade.orders().length === 0) {
+      <p class="p-6 text-sm text-slate-500">No orders match this search.</p>
+    } @else {
+      <div class="grid gap-3 p-4 md:hidden">
+        @for (order of facade.orders(); track order.id) {
+          <article class="grid gap-3 rounded-xl border border-slate-100 p-4">
+            <div class="flex items-start justify-between gap-3">
+              <div class="min-w-0">
+                <p class="truncate font-medium text-slate-900">{{ order.customer.fullName }}</p>
+                <p class="text-sm text-slate-500">{{ order.customer.phone }}</p>
+                <p class="mt-1 text-xs text-slate-500">
+                  {{ order.createdAt ? (order.createdAt | date: 'dd MMM yyyy, HH:mm') : '—' }}
+                </p>
+              </div>
+              <p class="shrink-0 text-sm font-semibold text-slate-900">
+                {{ order.total | currency: 'EGP' }}
+              </p>
+            </div>
+
+            <p class="m-0 text-sm text-slate-600">
+              {{ order.customer.governorate }}, {{ order.customer.city }} · {{ order.itemCount }} items
+            </p>
+
+            <div class="grid grid-cols-[1fr_auto] items-center gap-2">
+              <ng-container *ngTemplateOutlet="statusSelect; context: { $implicit: order }" />
+              <button
+                class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                type="button"
+                (click)="facade.toggleExpanded(order.id)"
+              >
+                {{ facade.expandedId() === order.id ? 'Hide' : 'View' }}
+              </button>
+            </div>
+
+            @if (facade.expandedId() === order.id) {
+              <ng-container *ngTemplateOutlet="orderDetails; context: { $implicit: order }" />
+            }
+          </article>
+        }
+      </div>
+
+      <div class="hidden overflow-x-auto md:block">
+        <table class="min-w-full text-left text-sm">
+          <thead class="bg-slate-50 text-slate-500">
+            <tr>
+              <th class="px-4 py-3 font-medium">Date</th>
+              <th class="px-4 py-3 font-medium">Customer</th>
+              <th class="px-4 py-3 font-medium">Phone</th>
+              <th class="px-4 py-3 font-medium">Location</th>
+              <th class="px-4 py-3 font-medium">Items</th>
+              <th class="px-4 py-3 font-medium">Total</th>
+              <th class="px-4 py-3 font-medium">Status</th>
+              <th class="px-4 py-3 font-medium">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (order of facade.orders(); track order.id) {
+              <tr class="border-t border-slate-100">
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">
+                  {{ order.createdAt ? (order.createdAt | date: 'dd MMM yyyy, HH:mm') : '—' }}
+                </td>
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-900">{{ order.customer.fullName }}</p>
+                  <p class="text-slate-500">{{ order.customer.address }}</p>
+                </td>
+                <td class="whitespace-nowrap px-4 py-3 text-slate-700">{{ order.customer.phone }}</td>
+                <td class="px-4 py-3 text-slate-700">
+                  {{ order.customer.governorate }}, {{ order.customer.city }}
+                </td>
+                <td class="px-4 py-3 text-slate-700">{{ order.itemCount }}</td>
+                <td class="whitespace-nowrap px-4 py-3 font-medium text-slate-900">
+                  {{ order.total | currency: 'EGP' }}
+                </td>
+                <td class="px-4 py-3">
+                  <ng-container *ngTemplateOutlet="statusSelect; context: { $implicit: order }" />
+                </td>
+                <td class="px-4 py-3">
+                  <button
+                    class="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50"
+                    type="button"
+                    (click)="facade.toggleExpanded(order.id)"
+                  >
+                    {{ facade.expandedId() === order.id ? 'Hide' : 'View' }}
+                  </button>
+                </td>
+              </tr>
+
+              @if (facade.expandedId() === order.id) {
+                <tr class="border-t border-slate-100 bg-slate-50">
+                  <td class="px-4 py-4" colspan="8">
+                    <ng-container *ngTemplateOutlet="orderDetails; context: { $implicit: order }" />
+                  </td>
+                </tr>
+              }
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+
+    <ng-template #statusSelect let-order>
+      <label class="block min-w-0">
+        <span class="sr-only">Order status</span>
+        <select
+          [class]="
+            'w-full rounded-lg border px-2 py-1.5 text-xs font-medium capitalize outline-none transition focus:ring-2 focus:ring-slate-900/10 disabled:opacity-60 ' +
+            statusClass(order.status)
+          "
+          [disabled]="facade.saving()"
+          (change)="onStatusChange(order, $event)"
+        >
+          @for (status of statuses; track status) {
+            <option [value]="status" [selected]="order.status === status">{{ status }}</option>
+          }
+        </select>
+      </label>
+    </ng-template>
+
+    <ng-template #orderDetails let-order>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wide text-slate-500">Delivery</p>
+          <p class="mt-1 text-sm text-slate-900">{{ order.customer.address }}</p>
+          <p class="text-sm text-slate-600">{{ order.customer.city }}, {{ order.customer.governorate }}</p>
+          @if (order.customer.notes) {
+            <p class="mt-2 text-sm text-slate-600">Notes: {{ order.customer.notes }}</p>
+          }
+        </div>
+
+        <ul class="m-0 grid list-none gap-3 p-0">
+          @for (item of order.items; track $index) {
+            <li class="flex items-center gap-3">
+              @if (item.imageUrl) {
+                <img class="size-12 rounded-lg object-cover" [src]="item.imageUrl" [alt]="item.name" />
+              }
+              <div class="min-w-0 flex-1">
+                <p class="truncate font-medium text-slate-900">{{ item.name }}</p>
+                <p class="text-xs text-slate-500">{{ item.brand || 'No brand' }} · × {{ item.quantity }}</p>
+              </div>
+              <p class="shrink-0 text-sm font-medium text-slate-900">
+                {{ item.lineTotal | currency: 'EGP' }}
+              </p>
+            </li>
+          }
+        </ul>
+      </div>
+    </ng-template>
+  </div>
+</section>

@@ -12,6 +12,7 @@ export class CartFacade {
   readonly itemCount = this.store.itemCount;
   readonly subtotal = this.store.subtotal;
   readonly isEmpty = this.store.isEmpty;
+  readonly pendingRemove = this.store.pendingRemove;
 
   addToCart(product: Product): void {
     const result = this.store.add(product);
@@ -37,11 +38,29 @@ export class CartFacade {
   }
 
   decrement(productId: string): void {
+    const item = this.items().find((entry) => entry.product.id === productId);
+    if (!item) {
+      return;
+    }
+
+    if (item.quantity <= 1) {
+      this.requestRemove(productId);
+      return;
+    }
+
     this.store.decrement(productId);
   }
 
-  remove(productId: string): void {
-    this.store.remove(productId);
+  requestRemove(productId: string): void {
+    this.store.requestRemove(productId);
+  }
+
+  cancelRemove(): void {
+    this.store.cancelRemove();
+  }
+
+  confirmRemove(): void {
+    this.store.confirmRemove();
   }
 
   clear(): void {

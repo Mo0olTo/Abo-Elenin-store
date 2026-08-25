@@ -22,8 +22,13 @@ export class CheckoutFacade {
   readonly subtotal = this.cart.subtotal;
   readonly isEmpty = this.cart.isEmpty;
   readonly saving = this.store.saving;
+  readonly completed = this.store.completed;
   readonly error = this.store.error;
   readonly hasError = this.store.hasError;
+
+  allowLeave(): boolean {
+    return this.completed() || this.cart.isEmpty();
+  }
 
   submit(customer: OrderCustomer): void {
     if (this.saving()) {
@@ -50,6 +55,7 @@ export class CheckoutFacade {
       .pipe(
         take(1),
         tap(() => {
+          this.store.setCompleted(true);
           this.cart.clear();
           this.messages.add({
             severity: 'success',

@@ -5,6 +5,7 @@ import { catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { Button } from '../../shared/ui/button/button';
+import { CartFacade } from '../cart/facade/cart.facade';
 import { ProductDetailsState } from './models/product-details.model';
 
 @Component({
@@ -16,6 +17,7 @@ import { ProductDetailsState } from './models/product-details.model';
 export class ProductDetails implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly productService = inject(ProductService);
+  private readonly cart = inject(CartFacade);
 
   protected product$!: Observable<ProductDetailsState>;
   protected readonly activeImageIndex = signal(0);
@@ -59,9 +61,6 @@ export class ProductDetails implements OnInit {
   }
 
   protected onAddToCart(product: Product): void {
-    if (product.stock <= 0) {
-      return;
-    }
-    // Cart service will handle this next.
+    this.cart.addToCart(product);
   }
 }

@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 import { ProductService } from '../../core/services/product.service';
 import { Home } from './home';
@@ -12,6 +13,7 @@ describe('Home', () => {
     await TestBed.configureTestingModule({
       imports: [Home],
       providers: [
+        MessageService,
         {
           provide: ProductService,
           useValue: {

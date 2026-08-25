@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { MessageService } from 'primeng/api';
 
 import { Cart } from './cart';
 
@@ -8,9 +10,9 @@ describe('Cart', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Cart]
-    })
-    .compileComponents();
+      imports: [Cart],
+      providers: [provideRouter([]), MessageService],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(Cart);
     component = fixture.componentInstance;

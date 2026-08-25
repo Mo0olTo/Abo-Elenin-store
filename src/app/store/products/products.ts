@@ -6,6 +6,7 @@ import { FilterGender } from '../../shared/ui/filter-gender/filter-gender';
 import { FilterPrice } from '../../shared/ui/filter-price/filter-price';
 import { FilterSort } from '../../shared/ui/filter-sort/filter-sort';
 import { ProductCard } from '../../shared/ui/product-card/product-card';
+import { CartFacade } from '../cart/facade/cart.facade';
 import { ProductsFacade } from './facade/products.facade';
 import { ProductsStore } from './store/products.store';
 
@@ -21,9 +22,10 @@ import { ProductsStore } from './store/products.store';
 })
 export class Products {
   protected readonly facade = inject(ProductsFacade);
+  private readonly cart = inject(CartFacade);
 
-  protected onAddToCart(_product: Product): void {
-    // Cart service will handle this next.
+  protected onAddToCart(product: Product): void {
+    this.cart.addToCart(product);
   }
 
   protected onEscape(): void {

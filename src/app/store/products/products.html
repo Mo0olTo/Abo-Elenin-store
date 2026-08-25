@@ -1,15 +1,135 @@
 <section class="mx-auto max-w-6xl px-4 py-16">
-  <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Products</h1>
+  <div class="flex items-center justify-between gap-4">
+    <h1 class="text-3xl font-semibold tracking-tight text-slate-900">{{ facade.heading() }}</h1>
 
-  @if (loading()) {
-    <p class="mt-3 max-w-xl text-slate-600">Loading the catalog…</p>
-  } @else if (products().length === 0) {
-    <p class="mt-3 max-w-xl text-slate-600">No products yet.</p>
-  } @else {
-    <div class="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 sm:gap-6">
-      @for (product of products(); track product.id) {
-        <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
+    <div class="flex items-center gap-2 lg:hidden">
+      <app-filter-sort
+        layout="menu"
+        [selected]="facade.sort()"
+        (selectedChange)="facade.setSort($event)"
+      />
+
+      <button
+        class="inline-flex items-center gap-2 rounded-lg border border-black/15 px-4 py-2 text-sm font-medium text-brand-charcoal"
+        type="button"
+        [attr.aria-expanded]="facade.filtersOpen()"
+        aria-controls="product-filters"
+        (click)="facade.openFilters()"
+      >
+        Filters
+        @if (facade.activeFilterCount() > 0) {
+          <span class="grid size-5 place-items-center rounded-full bg-brand-charcoal text-[11px] text-brand-white">
+            {{ facade.activeFilterCount() }}
+          </span>
+        }
+      </button>
+    </div>
+  </div>
+
+  @if (facade.hasError()) {
+    <p class="mt-3 max-w-xl text-sm text-red-700">{{ facade.error() }}</p>
+  }
+
+  <div class="mt-8 lg:grid lg:grid-cols-4 lg:gap-8">
+    @if (facade.filtersOpen()) {
+      <button
+        class="fixed inset-0 z-[60] cursor-default border-0 bg-black/40 p-0 lg:hidden"
+        type="button"
+        aria-label="Close filters"
+        (click)="facade.closeFilters()"
+      ></button>
+    }
+
+    <aside
+      id="product-filters"
+      class="fixed inset-y-0 start-0 z-[70] flex w-[min(20rem,85vw)] flex-col overflow-y-auto bg-brand-white p-5 shadow-xl transition-transform duration-300 lg:pointer-events-auto lg:static lg:z-auto lg:col-span-1 lg:w-auto lg:translate-x-0 lg:border-e lg:border-black/10 lg:p-0 lg:pe-6 lg:shadow-none"
+      [class.-translate-x-full]="!facade.filtersOpen()"
+      [class.translate-x-0]="facade.filtersOpen()"
+      [class.pointer-events-none]="!facade.filtersOpen()"
+      [class.pointer-events-auto]="facade.filtersOpen()"
+    >
+      <div class="mb-6 flex items-center justify-between lg:hidden">
+        <h2 class="m-0 text-lg font-semibold text-brand-charcoal">Filters</h2>
+        <button
+          class="rounded-lg px-2 py-1 text-sm text-brand-gray"
+          type="button"
+          (click)="facade.closeFilters()"
+        >
+          Close
+        </button>
+      </div>
+
+      <div class="grid gap-8 p-0 lg:p-5">
+        <div class="hidden lg:block">
+          <app-filter-sort
+            [selected]="facade.sort()"
+            (selectedChange)="facade.setSort($event)"
+          />
+        </div>
+
+        <app-filter-gender
+          [selected]="facade.selectedGenders()"
+          (selectedChange)="facade.setSelectedGenders($event)"
+        />
+
+        @if (facade.brandOptions().length > 0) {
+          <app-filter-brand
+            [options]="facade.brandOptions()"
+            [selected]="facade.selectedBrands()"
+            (selectedChange)="facade.setSelectedBrands($event)"
+          />
+        }
+
+        @if (facade.colorOptions().length > 0) {
+          <app-filter-color
+            [options]="facade.colorOptions()"
+            [selected]="facade.selectedColors()"
+            (selectedChange)="facade.setSelectedColors($event)"
+          />
+        }
+
+        @if (!facade.isEmpty()) {
+          <app-filter-price
+            [min]="facade.priceBounds().min"
+            [max]="facade.priceBounds().max"
+            [range]="facade.priceRange()"
+            (rangeChange)="facade.setPriceRange($event)"
+          />
+        }
+      </div>
+
+      @if (facade.hasActiveFilters()) {
+        <button
+          class="mt-8 text-left text-sm font-medium text-brand-charcoal underline underline-offset-4"
+          type="button"
+          (click)="facade.clearFilters()"
+        >
+          Clear filters
+        </button>
+      }
+    </aside>
+
+    <div class="lg:col-span-3">
+      @if (facade.loading()) {
+        <p class="max-w-xl text-slate-600">Loading the catalog…</p>
+      } @else if (facade.isEmpty()) {
+        <p class="max-w-xl text-slate-600">No products yet.</p>
+      } @else if (facade.products().length === 0) {
+        <p class="max-w-xl text-slate-600">No products match these filters.</p>
+        <button
+          class="mt-3 text-sm font-medium text-brand-charcoal underline underline-offset-4"
+          type="button"
+          (click)="facade.clearFilters()"
+        >
+          Clear filters
+        </button>
+      } @else {
+        <div class="grid grid-cols-2 gap-4 xl:grid-cols-3 xl:gap-6">
+          @for (product of facade.products(); track product.id) {
+            <app-product-card [product]="product" (addToCart)="onAddToCart($event)" />
+          }
+        </div>
       }
     </div>
-  }
+  </div>
 </section>

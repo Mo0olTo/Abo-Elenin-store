@@ -1,0 +1,33 @@
+<section>
+  <h2 class="m-0 text-sm font-semibold tracking-wide text-brand-gray uppercase">{{ title() }}</h2>
+
+  <p class="mt-3 m-0 text-sm text-brand-charcoal">
+    {{ range().min | currency: 'EGP' : 'symbol-narrow' : '1.0-0' }}
+    –
+    {{ range().max | currency: 'EGP' : 'symbol-narrow' : '1.0-0' }}
+  </p>
+
+  @if (canSlide()) {
+    <div class="filter-price__sliders mt-4">
+      <div class="filter-price__track"></div>
+      <input
+        class="filter-price__range"
+        type="range"
+        [min]="min()"
+        [max]="max()"
+        [value]="range().min"
+        (input)="onMinInput($event)"
+        [attr.aria-label]="'Minimum price'"
+      />
+      <input
+        class="filter-price__range"
+        type="range"
+        [min]="min()"
+        [max]="max()"
+        [value]="range().max"
+        (input)="onMaxInput($event)"
+        [attr.aria-label]="'Maximum price'"
+      />
+    </div>
+  }
+</section>

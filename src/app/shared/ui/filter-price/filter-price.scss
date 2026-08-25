@@ -1,0 +1,47 @@
+.filter-price__sliders {
+  position: relative;
+  height: 1.5rem;
+}
+
+.filter-price__track {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  height: 4px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  transform: translateY(-50%);
+}
+
+.filter-price__range {
+  position: absolute;
+  inset-inline: 0;
+  top: 50%;
+  width: 100%;
+  margin: 0;
+  appearance: none;
+  background: transparent;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.filter-price__range::-webkit-slider-thumb {
+  appearance: none;
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0a0a0a;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.filter-price__range::-moz-range-thumb {
+  width: 1rem;
+  height: 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #0a0a0a;
+  pointer-events: auto;
+  cursor: pointer;
+}

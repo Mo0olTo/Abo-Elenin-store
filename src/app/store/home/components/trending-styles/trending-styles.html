@@ -1,0 +1,30 @@
+<section class="mx-auto max-w-6xl px-4 py-16">
+  <!-- Title -->
+  <h2 class="mb-6 text-2xl font-semibold tracking-tight text-brand-charcoal sm:text-3xl">
+    Seasonal Collection
+  </h2>
+
+  <!-- Mobile: stacked -->
+  <div class="grid gap-3 md:hidden">
+    @for (style of styles; track style.title) {
+      <article class="relative h-72 overflow-hidden rounded-3xl">
+        <img class="h-full w-full object-cover" [src]="style.image" [alt]="style.imageAlt" />
+        <div class="absolute inset-0 bg-linear-to-t from-black/55 to-transparent"></div>
+        <h3 class="absolute bottom-5 left-5 m-0 text-lg font-semibold text-brand-white">
+          {{ style.title }}
+        </h3>
+      </article>
+    }
+  </div>
+
+  <!-- Desktop: hover grows this card, others shrink -->
+  <div class="trending-styles__panels hidden md:flex">
+    @for (style of styles; track style.title) {
+      <article class="trending-styles__card">
+        <img [src]="style.image" [alt]="style.imageAlt" />
+        <div class="trending-styles__overlay"></div>
+        <h3 class="trending-styles__title">{{ style.title }}</h3>
+      </article>
+    }
+  </div>
+</section>

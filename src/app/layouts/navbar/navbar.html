@@ -1,6 +1,14 @@
 <header class="navbar">
   <nav class="navbar__bar">
-    <a routerLink="/store/home" class="navbar__brand" (click)="closeMenu()">Abo Elenin Glasses</a>
+    <a
+      routerLink="/store/home"
+      class="navbar__brand"
+      aria-label="Abo El Enin Optics"
+      (click)="closeMenu()"
+    >
+      <img src="/images/icon.png" alt="" class="navbar__logo" />
+      <img src="/images/logo.webp" alt="" class="navbar__wordmark invert" />
+    </a>
 
     <button
       class="navbar__toggle"
@@ -24,6 +32,7 @@
             routerLinkActive="navbar__link--active"
             [routerLinkActiveOptions]="{ exact: true }"
             class="navbar__link"
+            data-label="Home"
             (click)="closeMenu()"
           >
             Home
@@ -32,6 +41,7 @@
             routerLink="/store/categories"
             routerLinkActive="navbar__link--active"
             class="navbar__link"
+            data-label="Categories"
             (click)="closeMenu()"
           >
             Categories
@@ -40,6 +50,7 @@
             routerLink="/store/new-arrivals"
             routerLinkActive="navbar__link--active"
             class="navbar__link"
+            data-label="New arrivals"
             (click)="closeMenu()"
           >
             New arrivals
@@ -48,6 +59,7 @@
             routerLink="/store/products"
             routerLinkActive="navbar__link--active"
             class="navbar__link"
+            data-label="Products"
             (click)="closeMenu()"
           >
             Products
@@ -56,6 +68,7 @@
             routerLink="/store/cart"
             routerLinkActive="navbar__link--active"
             class="navbar__link"
+            data-label="Cart"
             (click)="closeMenu()"
           >
             Cart

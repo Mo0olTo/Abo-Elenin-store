@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { of } from 'rxjs';
 
 import { ProductService } from '../../core/services/product.service';
@@ -14,6 +15,7 @@ describe('Products', () => {
       imports: [Products],
       providers: [
         provideRouter([]),
+        MessageService,
         {
           provide: ProductService,
           useValue: {

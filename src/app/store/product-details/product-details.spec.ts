@@ -4,6 +4,7 @@ import { of } from 'rxjs';
 
 import { ProductService } from '../../core/services/product.service';
 import { ProductDetails } from './product-details';
+import { MessageService } from 'primeng/api';
 
 describe('ProductDetails', () => {
   let component: ProductDetails;
@@ -14,6 +15,7 @@ describe('ProductDetails', () => {
       imports: [ProductDetails],
       providers: [
         provideRouter([]),
+        MessageService,
         {
           provide: ProductService,
           useValue: {

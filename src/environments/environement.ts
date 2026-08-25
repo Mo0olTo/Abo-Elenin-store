@@ -1,5 +1,6 @@
 export const environment = {
   production: false,
+  whatsappNumber: '+201150001151',
   firebase: {
     apiKey: 'AIzaSyBHBu1szVN3dItz1qYvhqEWaSThrsDQKX8',
     authDomain: 'aboeleinin-cb6bf.firebaseapp.com',

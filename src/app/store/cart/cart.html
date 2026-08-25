@@ -1,6 +1,101 @@
 <section class="mx-auto max-w-6xl px-4 py-16">
-  <h1 class="text-3xl font-semibold tracking-tight text-slate-900">Cart</h1>
-  <p class="mt-3 max-w-xl text-slate-600">
-    Your selected frames will appear here. Checkout will send the order to WhatsApp.
-  </p>
+  <h1 class="text-3xl font-semibold tracking-tight text-brand-charcoal">Cart</h1>
+
+  @if (facade.isEmpty()) {
+    <p class="mt-3 max-w-xl text-slate-600">Your cart is empty.</p>
+    <a
+      class="mt-6 inline-flex text-sm font-medium text-brand-charcoal underline underline-offset-4"
+      routerLink="/store/products"
+    >
+      Continue shopping
+    </a>
+  } @else {
+    <div class="mt-8 grid gap-8 lg:grid-cols-3">
+      <div class="grid gap-4 lg:col-span-2">
+        @for (item of facade.items(); track item.product.id) {
+          <article class="flex gap-4 rounded-2xl bg-brand-white p-4 shadow-md sm:p-5">
+            <img
+              class="size-24 shrink-0 rounded-xl object-cover sm:size-28"
+              [src]="imageFor(item)"
+              [alt]="item.product.name"
+            />
+
+            <div class="flex min-w-0 flex-1 flex-col gap-3">
+              <div class="flex items-start justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="m-0 truncate text-xs tracking-wide text-brand-gray uppercase">
+                    {{ item.product.brand }}
+                  </p>
+                  <h2 class="m-0 truncate text-base font-semibold text-brand-charcoal">
+                    {{ item.product.name }}
+                  </h2>
+                  <p class="m-0 mt-1 text-sm text-brand-charcoal">
+                    {{ unitPrice(item) | currency: 'EGP' }}
+                  </p>
+                </div>
+
+                <button
+                  class="shrink-0 rounded-lg px-2 py-1 text-sm text-red-600 hover:bg-red-50"
+                  type="button"
+                  [attr.aria-label]="'Remove ' + item.product.name"
+                  (click)="facade.remove(item.product.id)"
+                >
+                  Remove
+                </button>
+              </div>
+
+              <div class="mt-auto flex items-center justify-between gap-3">
+                <div class="inline-flex items-center rounded-lg border border-black/15">
+                  <button
+                    class="grid size-9 place-items-center text-lg text-brand-charcoal"
+                    type="button"
+                    [attr.aria-label]="'Decrease quantity of ' + item.product.name"
+                    (click)="facade.decrement(item.product.id)"
+                  >
+                    −
+                  </button>
+                  <span class="min-w-8 text-center text-sm font-medium text-brand-charcoal">
+                    {{ item.quantity }}
+                  </span>
+                  <button
+                    class="grid size-9 place-items-center text-lg text-brand-charcoal"
+                    type="button"
+                    [attr.aria-label]="'Increase quantity of ' + item.product.name"
+                    (click)="facade.increment(item.product.id)"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <p class="m-0 text-sm font-semibold text-brand-charcoal">
+                  {{ lineTotal(item) | currency: 'EGP' }}
+                </p>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+
+      <aside class="h-fit rounded-2xl bg-brand-white p-6 shadow-md lg:sticky lg:top-24">
+        <h2 class="m-0 text-lg font-semibold text-brand-charcoal">Checkout</h2>
+
+        <dl class="mt-5 grid gap-3 text-sm">
+          <div class="flex items-center justify-between">
+            <dt class="text-slate-600">Items</dt>
+            <dd class="m-0 font-medium text-brand-charcoal">{{ facade.itemCount() }}</dd>
+          </div>
+          <div class="flex items-center justify-between border-t border-black/10 pt-3">
+            <dt class="text-base font-semibold text-brand-charcoal">Total</dt>
+            <dd class="m-0 text-base font-semibold text-brand-charcoal">
+              {{ facade.subtotal() | currency: 'EGP' }}
+            </dd>
+          </div>
+        </dl>
+
+        <div class="mt-6">
+          <app-button label="Checkout" (clicked)="goToCheckout()" />
+        </div>
+      </aside>
+    </div>
+  }
 </section>

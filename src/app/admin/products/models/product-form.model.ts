@@ -54,6 +54,18 @@ export const publicProductImages: readonly string[] = [
   '/images/products/1.jpg',
   '/images/products/2.jpg',
   '/images/products/3.jpg',
+  '/images/products/4.jpg',
+  '/images/products/5.jpg',
+  '/images/products/6.jpg',
+  '/images/products/7.jpg',
+  '/images/products/8.jpg',
+  '/images/products/9.jpg',
+  '/images/products/10.jpg',
+  '/images/products/11.jpg',
+  '/images/products/12.jpg',
+  '/images/products/13.jpg',
+  '/images/products/14.jpg',
+  '/images/products/15.jpg',
 ];
 
 export function requireItems(control: AbstractControl<unknown[]>): ValidationErrors | null {

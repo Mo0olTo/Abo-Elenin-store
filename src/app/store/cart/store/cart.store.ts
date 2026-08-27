@@ -9,8 +9,10 @@ const STORAGE_KEY = 'abo-elenin-cart';
 export class CartStore {
   private readonly platformId = inject(PLATFORM_ID);
   private readonly itemsSignal = signal<CartItem[]>([]);
+  private readonly pendingRemoveSignal = signal<CartItem | null>(null);
 
   readonly items = this.itemsSignal.asReadonly();
+  readonly pendingRemove = this.pendingRemoveSignal.asReadonly();
   readonly itemCount = computed(() =>
     this.items().reduce((total, item) => total + item.quantity, 0),
   );
@@ -68,16 +70,30 @@ export class CartStore {
 
   decrement(productId: string): void {
     const item = this.items().find((entry) => entry.product.id === productId);
-    if (!item) {
-      return;
-    }
-
-    if (item.quantity <= 1) {
-      this.remove(productId);
+    if (!item || item.quantity <= 1) {
       return;
     }
 
     this.patchQuantity(productId, item.quantity - 1);
+  }
+
+  requestRemove(productId: string): void {
+    const item = this.items().find((entry) => entry.product.id === productId) ?? null;
+    this.pendingRemoveSignal.set(item);
+  }
+
+  cancelRemove(): void {
+    this.pendingRemoveSignal.set(null);
+  }
+
+  confirmRemove(): void {
+    const item = this.pendingRemove();
+    if (!item) {
+      return;
+    }
+
+    this.remove(item.product.id);
+    this.pendingRemoveSignal.set(null);
   }
 
   remove(productId: string): void {
@@ -85,6 +101,7 @@ export class CartStore {
   }
 
   clear(): void {
+    this.pendingRemoveSignal.set(null);
     this.itemsSignal.set([]);
   }
 

@@ -1,3 +1,4 @@
+import { provideZonelessChangeDetection } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { MessageService } from 'primeng/api';
@@ -11,7 +12,7 @@ describe('Cart', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [Cart],
-      providers: [provideRouter([]), MessageService],
+      providers: [provideZonelessChangeDetection(), provideRouter([]), MessageService],
     }).compileComponents();
 
     fixture = TestBed.createComponent(Cart);

@@ -31,6 +31,7 @@ export class ProductCard {
   protected readonly salePrice = computed(() =>
     Math.max(0, this.product().price - this.product().discount),
   );
+  protected readonly isOutOfStock = computed(() => this.product().stock <= 0);
 
   constructor() {
     effect(() => {
@@ -59,6 +60,10 @@ export class ProductCard {
   }
 
   protected onAddToCart(): void {
+    if (this.isOutOfStock()) {
+      return;
+    }
+
     this.addToCart.emit(this.product());
   }
 }

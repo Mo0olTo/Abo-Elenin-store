@@ -1,8 +1,8 @@
 import { CurrencyPipe, isPlatformBrowser } from '@angular/common';
-import { Component, computed, effect, inject, input, output, PLATFORM_ID, signal } from '@angular/core';
+import { Component, computed, DestroyRef, effect, inject, input, output, PLATFORM_ID, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { interval } from 'rxjs';
+import { interval, timer } from 'rxjs';
 import { Product } from '../../../core/models/product.model';
 import { Button } from '../button/button';
 
@@ -20,9 +20,11 @@ export class ProductCard {
   readonly addToCart = output<Product>();
 
   private readonly platformId = inject(PLATFORM_ID);
+  private readonly destroyRef = inject(DestroyRef);
 
   protected readonly activeIndex = signal(0);
   protected readonly hovered = signal(false);
+  protected readonly adding = signal(false);
 
   protected readonly images = computed(() => this.product().images ?? []);
   protected readonly colors = computed(() => this.product().colors ?? []);
@@ -60,10 +62,20 @@ export class ProductCard {
   }
 
   protected onAddToCart(): void {
-    if (this.isOutOfStock()) {
+    if (this.isOutOfStock() || this.adding()) {
       return;
     }
 
+    this.adding.set(true);
     this.addToCart.emit(this.product());
+
+    if (!isPlatformBrowser(this.platformId)) {
+      this.adding.set(false);
+      return;
+    }
+
+    timer(500)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => this.adding.set(false));
   }
 }

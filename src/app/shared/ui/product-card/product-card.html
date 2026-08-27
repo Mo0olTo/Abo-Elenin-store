@@ -81,7 +81,9 @@
 
     <app-button
       [label]="isOutOfStock() ? 'Out of stock' : 'Add to cart'"
+      loadingLabel="Adding..."
       [disabled]="isOutOfStock()"
+      [loading]="adding()"
       (clicked)="onAddToCart()"
     />
   </div>

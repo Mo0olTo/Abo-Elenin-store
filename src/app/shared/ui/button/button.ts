@@ -17,7 +17,7 @@ export class Button {
 
   protected readonly buttonClass = computed(() => {
     const base =
-      'inline-flex w-full items-center justify-center rounded-lg px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60';
+      'inline-flex w-full items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-60';
 
     if (this.variant() === 'danger') {
       return `${base} bg-red-600 text-white hover:bg-red-500`;

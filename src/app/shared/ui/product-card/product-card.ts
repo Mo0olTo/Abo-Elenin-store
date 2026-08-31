@@ -3,7 +3,7 @@ import { Component, computed, DestroyRef, effect, inject, input, output, PLATFOR
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { interval, timer } from 'rxjs';
-import { Product } from '../../../core/models/product.model';
+import { Product, productSalePrice } from '../../../core/models/product.model';
 import { Button } from '../button/button';
 
 @Component({
@@ -30,9 +30,7 @@ export class ProductCard {
   protected readonly colors = computed(() => this.product().colors ?? []);
   protected readonly hasColors = computed(() => this.colors().length > 0);
   protected readonly hasDiscount = computed(() => this.product().discount > 0);
-  protected readonly salePrice = computed(() =>
-    Math.max(0, this.product().price - this.product().discount),
-  );
+  protected readonly salePrice = computed(() => productSalePrice(this.product()));
   protected readonly isOutOfStock = computed(() => this.product().stock <= 0);
 
   constructor() {

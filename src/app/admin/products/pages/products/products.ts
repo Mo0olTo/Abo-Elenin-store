@@ -33,7 +33,7 @@ export class Products {
     categoryId: [''],
     gender: ['unisex' as ProductGender, Validators.required],
     price: [null as number | null, [Validators.required, Validators.min(0.01)]],
-    discount: [0 as number | null, [Validators.min(0)]],
+    discount: [0 as number | null, [Validators.min(0), Validators.max(100)]],
     stock: [0 as number | null, [Validators.min(0)]],
     frameMaterial: [''],
     lensType: [''],

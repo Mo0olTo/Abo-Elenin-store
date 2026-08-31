@@ -68,14 +68,17 @@
           <p class="m-0 flex items-baseline gap-x-3 text-lg">
             @if (state.product.discount > 0) {
               <span class="font-semibold text-brand-charcoal">
-                {{ salePrice(state.product) | currency: 'EGP' }}
+                {{ salePrice(state.product) | currency: 'EGP' : 'symbol' : '1.0-0' }}
               </span>
               <span class="text-brand-gray line-through">
-                {{ state.product.price | currency: 'EGP' }}
+                {{ state.product.price | currency: 'EGP' : 'symbol' : '1.0-0' }}
+              </span>
+              <span class="text-sm font-medium text-red-600">
+                -{{ state.product.discount }}%
               </span>
             } @else {
               <span class="font-semibold text-brand-charcoal">
-                {{ state.product.price | currency: 'EGP' }}
+                {{ state.product.price | currency: 'EGP' : 'symbol' : '1.0-0' }}
               </span>
             }
           </p>

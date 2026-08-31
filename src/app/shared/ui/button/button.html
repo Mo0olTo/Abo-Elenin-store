@@ -2,8 +2,12 @@
   class="cursor-pointer"
   [class]="buttonClass()"
   [attr.type]="type()"
+  [attr.aria-busy]="loading()"
   [disabled]="disabled() || loading()"
   (click)="onClick()"
 >
+  @if (loading()) {
+    <i class="pi pi-spinner pi-spin" aria-hidden="true"></i>
+  }
   {{ loading() ? loadingLabel() : label() }}
 </button>

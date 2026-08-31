@@ -13,12 +13,19 @@
       />
     }
 
-    @if (isOutOfStock()) {
-      <span
-        class="absolute top-3 inset-s-3 z-10 rounded-full bg-red-600 px-2.5 py-1 text-xs font-medium text-white"
-      >
-        Out of stock
-      </span>
+    @if (isOutOfStock() || hasDiscount()) {
+      <div class="absolute top-3 inset-s-3 z-10 flex flex-col items-start gap-1">
+        @if (isOutOfStock()) {
+          <span class="rounded-full bg-red-600 px-2.5 py-1 text-xs font-medium text-white">
+            Out of stock
+          </span>
+        }
+        @if (hasDiscount()) {
+          <span class="rounded-full bg-brand-charcoal px-2.5 py-1 text-xs font-medium text-white">
+            -{{ product().discount }}%
+          </span>
+        }
+      </div>
     }
 
     <a
@@ -37,17 +44,17 @@
     </a>
   </div>
 
-  <div class="grid flex-1 grid-rows-[1rem_1.5rem_1.25rem_0.875rem_auto] gap-2 px-4 pt-4 pb-4">
+  <div class="grid flex-1 grid-rows-[1rem_1.5rem_auto_0.875rem_auto] gap-2 px-4 pt-4 pb-4">
     <p class="m-0 truncate text-xs tracking-wide text-brand-gray uppercase">
       {{ product().brand || '\u00a0' }}
     </p>
     <h3 class="m-0 truncate text-base font-semibold text-brand-charcoal">{{ product().name }}</h3>
-    <p class="m-0 flex items-baseline gap-x-2 overflow-hidden text-sm whitespace-nowrap">
+    <p class="m-0 flex flex-col overflow-hidden text-sm leading-tight">
       @if (hasDiscount()) {
-        <span class="font-semibold text-brand-charcoal">{{ salePrice() | currency: 'EGP' }}</span>
-        <span class="text-brand-gray line-through">{{ product().price | currency: 'EGP' }}</span>
+        <span class="text-xs text-brand-gray line-through">{{ product().price | currency: 'EGP' : 'symbol' : '1.0-0' }}</span>
+        <span class="font-semibold text-brand-charcoal">{{ salePrice() | currency: 'EGP' : 'symbol' : '1.0-0' }}</span>
       } @else {
-        <span class="text-brand-gray">{{ product().price | currency: 'EGP' }}</span>
+        <span class="text-brand-gray">{{ product().price | currency: 'EGP' : 'symbol' : '1.0-0' }}</span>
       }
     </p>
 

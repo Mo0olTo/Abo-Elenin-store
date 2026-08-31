@@ -1,5 +1,5 @@
 import { computed, Injectable, signal } from '@angular/core';
-import { Product, ProductColor, ProductGender } from '../../../core/models/product.model';
+import { Product, ProductColor, ProductGender, productSalePrice } from '../../../core/models/product.model';
 import { ProductSort } from '../../../core/models/product-sort.model';
 import { collections } from '../../categories/models/collection.model';
 
@@ -196,6 +196,6 @@ export class ProductsStore {
   }
 
   private salePrice(product: Product): number {
-    return Math.max(0, product.price - product.discount);
+    return productSalePrice(product);
   }
 }

@@ -1,4 +1,4 @@
-import { Product } from '../../../core/models/product.model';
+import { Product, productSalePrice } from '../../../core/models/product.model';
 
 export interface CartItem {
   readonly product: Product;
@@ -8,7 +8,7 @@ export interface CartItem {
 export type CartAddResult = 'added' | 'increased' | 'out-of-stock';
 
 export function cartSalePrice(product: Product): number {
-  return Math.max(0, product.price - product.discount);
+  return productSalePrice(product);
 }
 
 export function cartItemImage(item: CartItem): string {

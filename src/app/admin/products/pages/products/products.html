@@ -89,14 +89,21 @@
         </label>
 
         <label class="block">
-          <span class="mb-1.5 block text-sm font-medium text-slate-700">Discount</span>
-          <input
-            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
-            type="number"
-            min="0"
-            step="0.01"
-            formControlName="discount"
-          />
+          <span class="mb-1.5 block text-sm font-medium text-slate-700">Discount (%)</span>
+          <div class="relative">
+            <input
+              class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2.5 pe-8 text-sm text-slate-900 outline-none transition focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 disabled:bg-slate-100"
+              type="number"
+              min="0"
+              max="100"
+              step="1"
+              formControlName="discount"
+            />
+            <span class="pointer-events-none absolute inset-e-3 top-1/2 -translate-y-1/2 text-sm text-slate-500">%</span>
+          </div>
+          @if (form.controls.discount.touched && form.controls.discount.invalid) {
+            <p class="mt-1 text-xs text-red-600">Enter a discount between 0 and 100.</p>
+          }
         </label>
 
         <label class="block">
@@ -210,7 +217,12 @@
                   <p class="font-medium text-slate-900">{{ product.name }}</p>
                   <p class="text-slate-500">{{ product.brand || 'No brand' }}</p>
                 </td>
-                <td class="px-4 py-3 text-slate-700">{{ product.price | currency: 'EGP' }}</td>
+                <td class="px-4 py-3 text-slate-700">
+                  {{ product.price | currency: 'EGP' }}
+                  @if (product.discount > 0) {
+                    <span class="text-slate-500"> (−{{ product.discount }}%)</span>
+                  }
+                </td>
                 <td class="px-4 py-3 text-slate-700">{{ product.stock }}</td>
                 <td class="px-4 py-3">
                   <span

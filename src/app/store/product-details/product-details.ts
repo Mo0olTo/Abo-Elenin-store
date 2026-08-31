@@ -2,7 +2,7 @@ import { AsyncPipe, CurrencyPipe } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { catchError, map, Observable, of, startWith, switchMap } from 'rxjs';
-import { Product } from '../../core/models/product.model';
+import { Product, productSalePrice } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { Button } from '../../shared/ui/button/button';
 import { CartFacade } from '../cart/facade/cart.facade';
@@ -49,7 +49,7 @@ export class ProductDetails implements OnInit {
   }
 
   protected salePrice(product: Product): number {
-    return Math.max(0, product.price - product.discount);
+    return productSalePrice(product);
   }
 
   protected selectImage(index: number): void {

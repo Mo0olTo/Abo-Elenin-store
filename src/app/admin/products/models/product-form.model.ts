@@ -101,7 +101,13 @@ export function formToWriteData(form: ProductFormValue): ProductWriteData | null
     return null;
   }
 
-  if (!Number.isFinite(discount) || discount < 0 || !Number.isFinite(stock) || stock < 0) {
+  if (
+    !Number.isFinite(discount) ||
+    discount < 0 ||
+    discount > 100 ||
+    !Number.isFinite(stock) ||
+    stock < 0
+  ) {
     return null;
   }
 
